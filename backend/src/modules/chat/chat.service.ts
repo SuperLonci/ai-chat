@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ChatMessage } from './entities/chat-message.entity';
 import { Chat } from './entities/chat.entity';
 import { HuggingFaceService } from './ai-provider/huggingface.service';
-import { CreateChatMessageDto } from './dto/create-chat-message.dto';
+import { CreateChatMessageDTO } from './dto/create-chat-message.dto';
 
 @Injectable()
 export class ChatService {
@@ -17,7 +17,7 @@ export class ChatService {
         private huggingFaceService: HuggingFaceService
     ) {}
 
-    async createChatMessage(createChatMessageDto: CreateChatMessageDto, chatId: number): Promise<Chat> {
+    async createChatMessage(createChatMessageDto: CreateChatMessageDTO, chatId: number): Promise<Chat> {
         const chat = await this.chatRepository.findOne( { where: { id: chatId}, relations: { messages: true} } );
         const chatMessage = new ChatMessage();
         chatMessage.author = "User";
@@ -46,8 +46,8 @@ export class ChatService {
         await this.chatRepository.delete(chatId);
     }
 
-    async getChat(id: number): Promise<Chat> {
-        const response = await this.chatRepository.findOneBy( { id } );
+    async getChat(chatId: number): Promise<Chat> {
+        const response = await this.chatRepository.findOne( { where: { id: chatId}, relations: { messages: true} } );
         return response
     }
 
