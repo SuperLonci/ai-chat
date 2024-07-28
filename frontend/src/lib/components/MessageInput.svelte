@@ -1,10 +1,13 @@
-<script>
-    import { chatStore, sendMessage } from '$lib/stores/chatStore';
+<script lang="ts">
+    import { chatStore, sendMessage, type Chat } from '$lib/stores/chatStore';
+
     let input = '';
+    export let chats: Chat[];
+    export let activeChatIndex: number;
   
     function handleSend() {
       if (input.trim()) {
-        sendMessage(input);
+        sendMessage(chats[activeChatIndex].id, input);
         input = '';
       }
     }

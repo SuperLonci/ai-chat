@@ -1,23 +1,43 @@
 import { writable } from 'svelte/store';
-import { sendMessageToBackend } from '../../services/chatService';
+import { fetchChat, fetchChats, sendMessageToBackend } from '../../services/chatService';
 
-// Define the message type
-type Message = {
-  sender: 'user' | 'bot';
-  text: string;
+export type Chat = {
+  id: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  messages: Message[];
+}
+export type Message = {
+  id: number;
+  author: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-// Explicitly set the type of chatStore
-export const chatStore = writable<Message[]>([]);
+export const chatStore = writable<Chat[]>([]);
 
-export async function sendMessage(message: string) {
-  chatStore.update(messages => [...messages, { sender: 'user', text: message }]);
+export async function sendMessage(chatId: number, message: string) {
+  const newChat = await sendMessageToBackend(chatId, message);
+  chatStore.update((chats) => {
+    const index = chats.findIndex((chat) => chat.id === chatId);
+    chats[index] = newChat;
+    return chats;
+  });
+}
 
-  try {
-    const botResponse = await sendMessageToBackend(message);
-    chatStore.update(messages => [...messages, { sender: 'bot', text: botResponse }]);
-  } catch (error) {
-    console.error('Error sending message', error);
-    chatStore.update(messages => [...messages, { sender: 'bot', text: 'Error: Could not retrieve response' }]);
-  }
+export async function loadChats() {
+  const chats = await fetchChats();
+  chatStore.set(chats);
+}
+
+export async function loadChat(chatId: number) {
+  const chat = await fetchChat(chatId);
+  chatStore.update((chats) => {
+    const index = chats.findIndex((chat) => chat.id === chatId);
+    chats[index] = chat;
+    return chats;
+  });
+  return chat;
 }

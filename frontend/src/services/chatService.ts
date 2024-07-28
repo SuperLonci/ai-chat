@@ -1,5 +1,7 @@
-export async function sendMessageToBackend(message: string): Promise<string> {
-  const response = await fetch('http://localhost:3000/chat', {
+import type { Chat } from "$lib/stores/chatStore";
+
+export async function sendMessageToBackend(chatId: number ,message: string): Promise<Chat> {
+  const response = await fetch(`http://localhost:3000/chat/${chatId}/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -12,5 +14,21 @@ export async function sendMessageToBackend(message: string): Promise<string> {
   }
 
   const data = await response.json();
-  return data.botResponse;
+  return data;
+}
+
+export async function fetchChats(): Promise<Chat[]> {
+  const response = await fetch('http://localhost:3000/chat');
+  if (!response.ok) {
+    throw new Error('Failed to fetch chats');
+  }
+  return await response.json();
+}
+
+export async function fetchChat(chatId: number): Promise<Chat> {
+  const response = await fetch(`http://localhost:3000/chat/${chatId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch chat');
+  }
+  return await response.json();
 }

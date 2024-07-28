@@ -1,14 +1,26 @@
-<script>
+<script lang="ts">
   import MessageList from '$lib/components/MessageList.svelte';
   import MessageInput from '$lib/components/MessageInput.svelte';
-  import { chatStore } from '$lib/stores/chatStore';
+  import { chatStore, loadChat, loadChats, type Chat, type Message } from '$lib/stores/chatStore';
+  import ChatList from './ChatList.svelte';
+  import { onMount } from 'svelte';
 
-  let messages = $chatStore;
+  let activeChatIndex: number;
+  let messages: Message[] = [];
+
+  onMount(async () => {
+    await loadChats();
+    activeChatIndex = $chatStore.findIndex((chat) => chat.id == 12) || 0;
+    await loadChat($chatStore[activeChatIndex].id);
+    messages = $chatStore[activeChatIndex].messages;
+  })
+
 </script>
 
 <div class="chat-container">
-  <MessageList {messages} />
-  <MessageInput />
+  <!-- <ChatList {chats} /> -->
+  <MessageList messages={$chatStore[activeChatIndex]?.messages ?? []} />
+  <MessageInput chats={$chatStore} {activeChatIndex} />
 </div>
 
 <style>
