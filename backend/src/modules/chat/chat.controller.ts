@@ -1,13 +1,15 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { CreateChatDto } from './dtos/create-chat.dto';
+import { CreateChatMessageDto } from './dto/create-chat-message.dto';
+import { ChatMessage } from './entities/chat-message.entity';
 
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  @Post()
-  create(@Body() createChatDto: CreateChatDto) {
-    return this.chatService.createChat(createChatDto);
+  @Post('messages')
+  @UsePipes(ValidationPipe)
+  async createMessage(@Body() createChatMessageDto: CreateChatMessageDto): Promise<ChatMessage> {
+    return this.chatService.createChatMessage(createChatMessageDto);
   }
 }

@@ -1,13 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { ChatMessage } from './chat-message.entity';
 
 @Entity()
 export class Chat {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  userMessage: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column()
-  botResponse: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @OneToMany(() => ChatMessage, (message) => message.chat)
+  messages: ChatMessage[];
 }

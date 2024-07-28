@@ -1,18 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateChatDto } from './dtos/create-chat.dto';
-import { Chat } from './entities/chat.entity';
+import { ChatMessage } from './entities/chat-message.entity';
+import { HuggingFaceService } from './huggingface.service';
+import { CreateChatMessageDto } from './dto/create-chat-message.dto';
 
 @Injectable()
 export class ChatService {
-  constructor(
-    @InjectRepository(Chat)
-    private chatRepository: Repository<Chat>,
-  ) {}
+    constructor(
+        @InjectRepository(ChatMessage)
+        private chatMessageRepository: Repository<ChatMessage>,
+        private huggingFaceService: HuggingFaceService
+    ) {}
 
-  async createChat(createChatDto: CreateChatDto): Promise<Chat> {
-    const chat = this.chatRepository.create(createChatDto);
-    return this.chatRepository.save(chat);
-  }
+    async createChatMessage(createChatMessageDto: CreateChatMessageDto): Promise<ChatMessage> {
+        const chatMessage = new ChatMessage();
+        chatMessage.content = createChatMessageDto.content;
+        await this.chatMessageRepository.save(chatMessage);
+
+        const response = await this.huggingFaceService.generateText(createChatMessageDto.content);
+        chatMessage.response = response;
+        await this.chatMessageRepository.save(chatMessage);
+
+        return chatMessage;
+    }
 }
