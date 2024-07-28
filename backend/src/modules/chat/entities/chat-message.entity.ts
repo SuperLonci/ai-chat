@@ -7,10 +7,10 @@ export class ChatMessage {
     id: number;
 
     @Column()
-    content: string;
+    author: string;
 
-    @Column({ nullable: true })
-    response: string;
+    @Column({ type:"longtext" })
+    content: string;
 
     @CreateDateColumn()
     createdAt: Date;

@@ -4,7 +4,7 @@ import { ChatMessage } from './entities/chat-message.entity';
 import { Chat } from './entities/chat.entity';
 import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
-import { HuggingFaceModule } from './huggingface.module';
+import { HuggingFaceModule } from './ai-provider/huggingface.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ChatMessage, Chat]), HuggingFaceModule],

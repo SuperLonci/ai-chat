@@ -7,7 +7,7 @@ export class HuggingFaceService {
 
   constructor() {}
 
-  async generateText(prompt: string) {
+  async generateText(prompt: string): Promise<string> {
     const headers = {
       Authorization: `Bearer ${this.apiKey}`,
       'Content-Type': 'application/json',
@@ -15,11 +15,18 @@ export class HuggingFaceService {
 
     const data = {
       inputs: prompt,
+      parameters: {
+        temperature: 0.9,
+        repetition_penalty: 5,
+        max_time: 10,
+        max_length: 100,
+        min_length: 10,
+      }
     };
 
     try {
       const response = await axios.post(
-        'https://api-inference.huggingface.co/models/gpt2',
+        'https://api-inference.huggingface.co/models/mistralai/Mistral-Nemo-Instruct-2407',
         data,
         { headers }
       );

@@ -6,12 +6,15 @@ export class Chat {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  name: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => ChatMessage, (message) => message.chat)
+  @OneToMany(() => ChatMessage, (message) => message.chat, { cascade: true })
   messages: ChatMessage[];
 }
