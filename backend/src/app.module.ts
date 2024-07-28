@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
-  imports: [ChatModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mariadb',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'password',
+      database: 'chatdb',
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    ChatModule,
+  ],
 })
 export class AppModule {}
