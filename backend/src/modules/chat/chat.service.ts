@@ -14,7 +14,7 @@ export class ChatService {
 
         @InjectRepository(Chat)
         private chatRepository: Repository<Chat>,
-        private huggingFaceService: HuggingFaceService
+        private aiProvider: HuggingFaceService
     ) {}
 
     async createChatMessage(createChatMessageDto: CreateChatMessageDTO, chatId: number): Promise<Chat> {
@@ -24,7 +24,7 @@ export class ChatService {
         chatMessage.content = createChatMessageDto.message;
         chat.messages.push(chatMessage);
 
-        const response = await this.huggingFaceService.generateText(createChatMessageDto.message)
+        const response = await this.aiProvider.generateText(createChatMessageDto.message)
         const responseMessage = new ChatMessage();
         responseMessage.content = response;
         responseMessage.author = "AI";
