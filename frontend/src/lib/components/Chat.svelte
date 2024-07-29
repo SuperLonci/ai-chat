@@ -13,17 +13,46 @@
     activeChatIndex = $chatStore.findIndex((chat) => chat.id == 12) || 0;
     await loadChat($chatStore[activeChatIndex].id);
     messages = $chatStore[activeChatIndex].messages;
-  })
-
+  });
 </script>
 
-<div class="chat-container">
-  <!-- <ChatList {chats} /> -->
-  <MessageList messages={$chatStore[activeChatIndex]?.messages ?? []} />
-  <MessageInput chats={$chatStore} {activeChatIndex} />
+<div class="main-container">
+  <div class="sidebar">
+    <ChatList chats={$chatStore} />
+  </div>
+  <div class="chat-container">
+    <MessageList messages={$chatStore[activeChatIndex]?.messages ?? []} />
+    <MessageInput chats={$chatStore} {activeChatIndex} />
+  </div>
 </div>
 
 <style>
+  .main-container {
+    display: flex;
+    height: 90vh;
+    max-width: 1200px;
+    margin: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 30%;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- <style>
   .chat-container {
     display: flex;
     flex-direction: column;
@@ -34,4 +63,4 @@
     border-radius: 10px;
     overflow: hidden;
   }
-</style>
+</style> -->

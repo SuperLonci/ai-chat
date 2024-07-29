@@ -11,9 +11,9 @@ export class ChatService {
     constructor(
         @InjectRepository(ChatMessage)
         private chatMessageRepository: Repository<ChatMessage>,
-
         @InjectRepository(Chat)
         private chatRepository: Repository<Chat>,
+
         private aiProvider: HuggingFaceService
     ) {}
 
