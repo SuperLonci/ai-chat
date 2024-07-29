@@ -9,8 +9,6 @@ import { CreateChatMessageDTO } from './dto/create-chat-message.dto';
 @Injectable()
 export class ChatService {
     constructor(
-        @InjectRepository(ChatMessage)
-        private chatMessageRepository: Repository<ChatMessage>,
         @InjectRepository(Chat)
         private chatRepository: Repository<Chat>,
 

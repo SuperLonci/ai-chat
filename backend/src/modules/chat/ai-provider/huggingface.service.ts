@@ -18,7 +18,7 @@ export class HuggingFaceService implements AIProvider {
       inputs: prompt,
       parameters: {
         // temperature: 0.9,
-        // repetition_penalty: 5,
+        repetition_penalty: 5,
         max_time: 10,
         max_length: 150,
         min_length: 5,
