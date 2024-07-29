@@ -14,11 +14,17 @@
     await loadChat($chatStore[activeChatIndex].id);
     messages = $chatStore[activeChatIndex].messages;
   });
+
+  const handleSelectChat = async (event: { detail: { index: number; }; }) => {
+    activeChatIndex = event.detail.index;
+    await loadChat($chatStore[activeChatIndex].id);
+    messages = $chatStore[activeChatIndex].messages;
+  };
 </script>
 
 <div class="main-container">
   <div class="sidebar">
-    <ChatList chats={$chatStore} />
+    <ChatList chats={$chatStore} activeChatIndex={activeChatIndex} on:selectChat={handleSelectChat} />
   </div>
   <div class="chat-container">
     <MessageList messages={$chatStore[activeChatIndex]?.messages ?? []} />
@@ -31,6 +37,7 @@
     display: flex;
     height: 90vh;
     max-width: 1200px;
+    width: 1200px;
     margin: auto;
     border: 1px solid #ddd;
     border-radius: 10px;
