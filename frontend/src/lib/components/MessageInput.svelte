@@ -11,10 +11,22 @@
         input = '';
       }
     }
+
+    function handleKeydown(event: KeyboardEvent) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleSend();
+      }
+    }
   </script>
   
   <div class="input-container">
-    <input type="text" bind:value={input} placeholder="Type a message..." />
+    <input 
+      type="text" 
+      bind:value={input} 
+      placeholder="Type a message..."
+      on:keydown={handleKeydown} 
+    />
     <button on:click={handleSend}>Send</button>
   </div>
   
