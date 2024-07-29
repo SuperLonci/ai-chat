@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { AIProvider } from './ai-provider.interface';
 
 @Injectable()
-export class HuggingFaceService {
+export class HuggingFaceService implements AIProvider {
   private readonly apiKey = process.env.HUGGINGFACE_API_KEY;
 
   constructor() {}
@@ -16,11 +17,11 @@ export class HuggingFaceService {
     const data = {
       inputs: prompt,
       parameters: {
-        temperature: 0.9,
-        repetition_penalty: 5,
+        // temperature: 0.9,
+        // repetition_penalty: 5,
         max_time: 10,
-        max_length: 100,
-        min_length: 10,
+        max_length: 150,
+        min_length: 5,
       }
     };
 
