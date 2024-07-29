@@ -1,7 +1,7 @@
 <script lang="ts">
   import MessageList from '$lib/components/MessageList.svelte';
   import MessageInput from '$lib/components/MessageInput.svelte';
-  import { chatStore, loadChat, loadChats, type Chat, type Message } from '$lib/stores/chatStore';
+  import { chatStore, createChat, loadChat, loadChats, type Chat, type Message } from '$lib/stores/chatStore';
   import ChatList from './ChatList.svelte';
   import { onMount } from 'svelte';
 
@@ -20,11 +20,24 @@
     await loadChat($chatStore[activeChatIndex].id);
     messages = $chatStore[activeChatIndex].messages;
   };
+
+  const handleCreateChat = async () => {
+    await createChat();
+    await loadChats();
+    activeChatIndex = $chatStore.length - 1;
+    await loadChat($chatStore[activeChatIndex].id);
+    messages = $chatStore[activeChatIndex].messages;
+  }
 </script>
 
 <div class="main-container">
   <div class="sidebar">
-    <ChatList chats={$chatStore} activeChatIndex={activeChatIndex} on:selectChat={handleSelectChat} />
+    <ChatList 
+      chats={$chatStore} 
+      activeChatIndex={activeChatIndex} 
+      on:selectChat={handleSelectChat}
+      on:createChat={handleCreateChat}
+  />
   </div>
   <div class="chat-container">
     <MessageList messages={$chatStore[activeChatIndex]?.messages ?? []} />

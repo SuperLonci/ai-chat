@@ -32,3 +32,16 @@ export async function fetchChat(chatId: number): Promise<Chat> {
   }
   return await response.json();
 }
+
+export async function createChatInBackend(): Promise<Chat> {
+  const response = await fetch('http://localhost:3000/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create chat');
+  }
+  return await response.json();
+}
