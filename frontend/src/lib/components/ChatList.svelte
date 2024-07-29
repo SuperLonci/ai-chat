@@ -21,6 +21,11 @@
       dispatch("createChat");
     }
 
+    const deleteChat = (index: number, event: MouseEvent) => {
+      event.stopPropagation();
+      dispatch('deleteChat', { index });
+    };
+
 </script>
 
 <div class="chat-list-container">
@@ -41,22 +46,29 @@
             on:keydown={(event) => handleKeyDown(event, index)}
         >
             <p>{chat.name}</p>
+            <button 
+              class="delete-button" 
+              on:click={(event) => deleteChat(index, event)}
+              aria-label="Delete chat"
+            >
+              🗑️
+            </button>
         </div>
     {/each}
 </div>
 
 <style>
   .chat-list-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
   }
   .chat-list {
-      flex: 1;
-      padding: 0;
-      margin: 0;
-      overflow-y: auto;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
   }
 
   .header {
@@ -75,13 +87,14 @@
   }
 
   .chat-item {
+    position: relative;
     padding: 10px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
     transition: background-color 0.3s;
   }
 
-  .chat-item:hover {
+  .chat-item:hover, .chat-item:focus {
     background-color: #f0f0f0;
   }
 
@@ -113,5 +126,27 @@
 
   .add-chat-button:hover {
     background-color: #0056b3;
+  }
+
+  .delete-button {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #ff4d4d;
+    transition: color 0.3s;
+  }
+
+  .chat-item:hover .delete-button {
+    display: block;
+  }
+
+  .delete-button:hover {
+    color: #cc0000;
   }
 </style>

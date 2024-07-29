@@ -45,3 +45,12 @@ export async function createChatInBackend(): Promise<Chat> {
   }
   return await response.json();
 }
+
+export async function deleteChatInBackend(chatId: number): Promise<void> {
+  const response = await fetch(`http://localhost:3000/chat/${chatId}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete chat');
+  }
+}

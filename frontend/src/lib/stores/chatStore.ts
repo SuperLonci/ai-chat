@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { createChatInBackend, fetchChat, fetchChats, sendMessageToBackend } from '../../services/chatService';
+import { createChatInBackend, deleteChatInBackend, fetchChat, fetchChats, sendMessageToBackend } from '../../services/chatService';
 
 export type Chat = {
   id: number;
@@ -44,6 +44,12 @@ export async function loadChat(chatId: number) {
 
 export async function createChat() {
   await createChatInBackend();
+  const chats = await fetchChats();
+  chatStore.set(chats);
+}
+
+export async function deleteChat(chatId: number) {
+  await deleteChatInBackend(chatId);
   const chats = await fetchChats();
   chatStore.set(chats);
 }

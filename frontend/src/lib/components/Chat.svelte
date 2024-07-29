@@ -1,7 +1,7 @@
 <script lang="ts">
   import MessageList from '$lib/components/MessageList.svelte';
   import MessageInput from '$lib/components/MessageInput.svelte';
-  import { chatStore, createChat, loadChat, loadChats, type Chat, type Message } from '$lib/stores/chatStore';
+  import { chatStore, createChat, deleteChat, loadChat, loadChats, type Chat, type Message } from '$lib/stores/chatStore';
   import ChatList from './ChatList.svelte';
   import { onMount } from 'svelte';
 
@@ -28,6 +28,19 @@
     await loadChat($chatStore[activeChatIndex].id);
     messages = $chatStore[activeChatIndex].messages;
   }
+
+  const handleDeleteChat = async (event: { detail: { index: number; }; }) => {
+    const index = event.detail.index;
+    const chatID = $chatStore[index].id;
+    await deleteChat(chatID);
+
+    if (activeChatIndex === index) {
+      activeChatIndex = 0;
+    }
+    
+    await loadChat($chatStore[activeChatIndex].id);
+    messages = $chatStore[activeChatIndex].messages;
+  }
 </script>
 
 <div class="main-container">
@@ -37,6 +50,7 @@
       activeChatIndex={activeChatIndex} 
       on:selectChat={handleSelectChat}
       on:createChat={handleCreateChat}
+      on:deleteChat={handleDeleteChat}
   />
   </div>
   <div class="chat-container">
