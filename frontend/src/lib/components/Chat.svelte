@@ -85,16 +85,3 @@
     box-sizing: border-box;
   }
 </style>
-
-<!-- <style>
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    max-width: 600px;
-    margin: auto;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-</style> -->
